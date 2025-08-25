@@ -1,0 +1,81 @@
+# ================================================
+# Unity + Visual Studio 2022 .gitignore (Recommended)
+# Based on github/gitignore official template
+# ================================================
+
+# ---- Unity generated folders ----
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+.utmp/
+
+# ---- Unity generated files ----
+*.log
+sysinfo.txt
+mono_crash.*
+
+# MemoryCaptures can get excessive in size.
+[Mm]emoryCaptures/
+# Recordings can get excessive in size
+[Rr]ecordings/
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# ---- Builds ----
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+*.exe
+
+# ---- Addressables (optional, safe to ignore by default) ----
+/ServerData
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/AddressableAssetsData/link.xml*
+/[Aa]ssets/Addressables_Temp*
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+
+# ---- Visual Scripting auto-generated files ----
+/[Aa]ssets/Unity.VisualScripting.Generated/
+
+# ---- IDE / Editors ----
+# Visual Studio
+.vs/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.opendb
+*.VC.db
+*.pdb
+*.mdb
+
+# Rider (optional - comment out if you use Rider)
+.idea/
+*.DotSettings.user
+
+# Gradle (Android builds)
+.gradle/
+
+# ---- Other OS / Tooling ----
+.DS_Store
+Thumbs.db
+ExportedObj/
+.consulo/
+
+# ---- Test Runner generated files ----
+InitTestScene*.unity*
+
+# Crashlytics generated file
+crashlytics-build.properties
