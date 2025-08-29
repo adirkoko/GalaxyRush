@@ -92,16 +92,6 @@ public class SpacecraftMovementStats : ScriptableObject
     [Tooltip("Clamp factor for steering at top speed (e.g. 0.6 = 60% turn rate).")]
     [SerializeField] private float steerClampAtTop = 0.6f;
 
-    [Header("Control Keys")]
-    [Tooltip("Key used for boosting (Afterburner or Dash).")]
-    [SerializeField] private Key boostKey = Key.LeftShift;
-
-    [Tooltip("Key used for braking.")]
-    [SerializeField] private Key brakeKey = Key.Space;
-
-    [Tooltip("Key used for manual stabilization (extra grip).")]
-    [SerializeField] private Key stabilizeKey = Key.C;
-
     // --- Properties for code access ---
     public float MaxSpeed => maxSpeed;
     public float Accel => accel;
@@ -136,8 +126,4 @@ public class SpacecraftMovementStats : ScriptableObject
 
     public float HighSpeedStability => highSpeedStability;
     public float SteerClampAtTop => steerClampAtTop;
-
-    public Key BoostKey => boostKey;
-    public Key BrakeKey => brakeKey;
-    public Key StabilizeKey => stabilizeKey;
 }

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e682b183cec025488a16aa710b1a6e3, type: 3}
   m_Name: Ship1MovementStats
   m_EditorClassIdentifier: Assembly-CSharp::SpacecraftMovementStats
-  maxSpeed: 20
+  maxSpeed: 30
   accel: 30
   throttleAccel: 3.2
   throttleDecel: 3.4
   brakeStrength: 28
   linearDampingIdle: 0.06
   turnTorque: 12
-  maxAngularSpeed: 360
-  turnKp: 6
-  turnKd: 1.6
+  maxAngularSpeed: 200
+  turnKp: 11
+  turnKd: 5
   angleDeadzone: 1
   boostMode: 0
   boostMultiplier: 11
@@ -36,6 +36,3 @@ MonoBehaviour:
   gripOnlyWhenInput: 1
   highSpeedStability: 0.6
   steerClampAtTop: 0.6
-  boostKey: 51
-  brakeKey: 1
-  stabilizeKey: 17

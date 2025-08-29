@@ -96,26 +96,17 @@ public class SpacecraftMovement : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Reads keyboard input and updates direction, braking, and stabilizing states.
-    /// </summary>
     private void HandleInput()
     {
-        Vector2 input = Vector2.zero;
-        if (Keyboard.current.upArrowKey.isPressed) input.y += 1;
-        if (Keyboard.current.downArrowKey.isPressed) input.y -= 1;
-        if (Keyboard.current.rightArrowKey.isPressed) input.x += 1;
-        if (Keyboard.current.leftArrowKey.isPressed) input.x -= 1;
+        Vector2 input = GameInput.Instance.GetMoveVector();
 
-        // Normalize input if any key pressed
         targetDir = input.sqrMagnitude > 0f ? input.normalized : Vector2.zero;
-
-        // Flag for movement logic
         hasInput = targetDir != Vector2.zero;
 
-        braking = Keyboard.current[stats.BrakeKey].isPressed;
-        stabilizing = Keyboard.current[stats.StabilizeKey].isPressed;
+        braking = GameInput.Instance.IsBrakeActionPressed();
+        stabilizing = GameInput.Instance.IsStabilizeActionPressed();
     }
+
 
 
     /// <summary>
@@ -129,7 +120,7 @@ public class SpacecraftMovement : MonoBehaviour
 
         if (stats.BoostType == SpacecraftMovementStats.BoostMode.Afterburner)
         {
-            bool keyDown = Keyboard.current[stats.BoostKey].isPressed;
+            bool keyDown = GameInput.Instance.IsBoostActionPressed();
 
             // Lock boost if energy is depleted while boosting
             if (boosting && boostEnergy <= 0f)
@@ -148,7 +139,7 @@ public class SpacecraftMovement : MonoBehaviour
         }
         else // Dash mode
         {
-            if (Keyboard.current[stats.BoostKey].wasPressedThisFrame && Time.time >= nextDashTime)
+            if (GameInput.Instance.WasBoostActionPressedThisFrame() && Time.time >= nextDashTime)
             {
                 // Apply dash impulse
                 rb.AddForce(transform.up * stats.DashImpulse, ForceMode2D.Impulse);
