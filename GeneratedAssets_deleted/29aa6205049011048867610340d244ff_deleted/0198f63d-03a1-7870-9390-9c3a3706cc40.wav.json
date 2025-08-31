@@ -1,0 +1,13 @@
+{
+    "asset": "29aa6205049011048867610340d244ff",
+    "fileName": "0198f63d-03a1-7870-9390-9c3a3706cc40.wav",
+    "prompt": "Small thruster puff when rotating",
+    "negativePrompt": "",
+    "model": "0ee39b33-2893-4e0f-8c46-0e0bdd4eda85",
+    "modelName": "Text to Sound",
+    "customSeed": -1,
+    "w3CTraceId": "56ed243f4304aa0411adf6fee8a9371c",
+    "duration": 9.898666381835938,
+    "autoTrim": true,
+    "hasReference": true
+}

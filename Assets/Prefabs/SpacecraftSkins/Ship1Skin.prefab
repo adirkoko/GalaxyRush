@@ -226,6 +226,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightThrusterParticleSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 5626142120532356289, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7777506112856376982, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -301,6 +305,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CenterThrusterParticleSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 5626142120532356289, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7777506112856376982, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -375,6 +383,10 @@ PrefabInstance:
     - target: {fileID: 67900307044645530, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
       propertyPath: m_Name
       value: LeftThrusterParticleSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626142120532356289, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7777506112856376982, guid: a551acff781a8d74e94e9c00210a0cec, type: 3}
       propertyPath: m_LocalScale.x

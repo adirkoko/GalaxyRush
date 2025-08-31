@@ -1,0 +1,13 @@
+{
+    "asset": "1ca54521f9d1d214abd67b3f47221630",
+    "fileName": "0198f768-c60b-72db-a993-4fd7b2d82517.wav",
+    "prompt": "Void Engine loop",
+    "negativePrompt": "",
+    "model": "0ee39b33-2893-4e0f-8c46-0e0bdd4eda85",
+    "modelName": "Text to Sound",
+    "customSeed": -1,
+    "w3CTraceId": "4ac15b875abc70c6a4b70551b7df9399",
+    "duration": 10.55346965789795,
+    "autoTrim": false,
+    "hasReference": true
+}

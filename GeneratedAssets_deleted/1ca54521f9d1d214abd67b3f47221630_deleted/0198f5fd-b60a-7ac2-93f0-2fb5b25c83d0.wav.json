@@ -1,0 +1,13 @@
+{
+    "asset": "1ca54521f9d1d214abd67b3f47221630",
+    "fileName": "0198f5fd-b60a-7ac2-93f0-2fb5b25c83d0.wav",
+    "prompt": "short sci-fi thruster burst, quick hiss of gas, mechanical click, space ambience",
+    "negativePrompt": "",
+    "model": "0ee39b33-2893-4e0f-8c46-0e0bdd4eda85",
+    "modelName": "Text to Sound",
+    "customSeed": -1,
+    "w3CTraceId": "dc83ab8ba099991468ea8cf88fdb12f5",
+    "duration": 1.0,
+    "autoTrim": true,
+    "hasReference": false
+}

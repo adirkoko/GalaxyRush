@@ -1,0 +1,13 @@
+{
+    "asset": "87e30eaf1964de94189375634848dc9d",
+    "fileName": "0198f60d-288c-7447-b4a5-ede1e5fef5e3.wav",
+    "prompt": "futuristic spacecraft engine thrust, steady continuous burn, low rumble with subtle high-pitched whine, sci-fi",
+    "negativePrompt": "",
+    "model": "0ee39b33-2893-4e0f-8c46-0e0bdd4eda85",
+    "modelName": "Text to Sound",
+    "customSeed": -1,
+    "w3CTraceId": "0567853b6d261ffcc678ca176e92e779",
+    "duration": 18.463333129882814,
+    "autoTrim": false,
+    "hasReference": true
+}

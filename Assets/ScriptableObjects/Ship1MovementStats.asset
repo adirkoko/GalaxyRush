@@ -27,11 +27,15 @@ MonoBehaviour:
   boostMultiplier: 11
   boostCapacity: 2
   boostUsePerSec: 1
-  boostRegenPerSec: 0.6
-  boostMinFractionToActivate: 0.25
-  dashImpulse: 1111
+  boostRegenPerSec: 0.5
+  boostMinFractionToActivate: 0.23352325
+  dashChargeCapacity: 100
+  dashChargeRegenPerSec: 30
+  dashMinFractionToActivate: 0.157
+  dashImpulseMin: 55
+  dashImpulseMax: 222
   dashDuration: 0.15
-  dashCooldown: 0.2
+  dashOverspeedMultiplier: 5
   lateralGrip: 0
   gripOnlyWhenInput: 1
   highSpeedStability: 0.6
