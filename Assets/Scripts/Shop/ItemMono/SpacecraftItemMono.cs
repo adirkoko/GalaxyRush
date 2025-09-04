@@ -1,6 +1,4 @@
-﻿// SpacecraftItemMono.cs
-using TMPro;
-using Unity.Android.Gradle.Manifest;
+﻿using TMPro;
 using UnityEngine;
 
 public class SpacecraftItemMono : ItemMono
