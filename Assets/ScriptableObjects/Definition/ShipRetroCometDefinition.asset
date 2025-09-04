@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae04f20547662f44bc8c3fe2e94733c, type: 3}
+  m_Name: ShipRetroCometDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftDefinition
+  id: shipretrocometdefinition
+  displayName: Retro Comet
+  icon: {fileID: -7848759526397322473, guid: a53472da0c3bd4c4aa21fe15df86a928, type: 3}
+  price: 1000
+  movementStats: {fileID: 11400000, guid: 3b19b8f62919aa341808b98a409ac5d8, type: 2}
+  skinPrefab: {fileID: 7760003387857995792, guid: 48b068b5a266fd74fbf6c9a5024b6c94, type: 3}

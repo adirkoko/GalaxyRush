@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae04f20547662f44bc8c3fe2e94733c, type: 3}
+  m_Name: ShipHaloRunnerDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftDefinition
+  id: shiphalorunnerdefinition
+  displayName: Halo Runner
+  icon: {fileID: 4313283323572476300, guid: bfbcde4fd989f6046a37d3c72371b3bd, type: 3}
+  price: 1000
+  movementStats: {fileID: 11400000, guid: a8de7c65a02aabb4a8f21916ac1c2d28, type: 2}
+  skinPrefab: {fileID: 7760003387857995792, guid: c27e8b9dbadbf5b42a53cb782da27dd4, type: 3}

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e682b183cec025488a16aa710b1a6e3, type: 3}
+  m_Name: ShipSolarSabreMovementStats
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftMovementStats
+  maxSpeed: 200
+  accel: 30
+  throttleAccel: 3.2
+  throttleDecel: 3.4
+  brakeStrength: 100
+  linearDampingIdle: 0.06
+  turnTorque: 12
+  maxAngularSpeed: 200
+  turnKp: 26.8
+  turnKd: 10.41
+  angleDeadzone: 1
+  boostMode: 1
+  boostMultiplier: 11
+  boostCapacity: 2
+  boostUsePerSec: 1
+  boostRegenPerSec: 0.5
+  boostMinFractionToActivate: 0.23352325
+  dashChargeCapacity: 100
+  dashChargeRegenPerSec: 30
+  dashMinFractionToActivate: 0.157
+  dashImpulseMin: 55
+  dashImpulseMax: 222
+  dashDuration: 0.15
+  dashOverspeedMultiplier: 5
+  lateralGrip: 0
+  gripOnlyWhenInput: 1
+  highSpeedStability: 0.6
+  steerClampAtTop: 0.6

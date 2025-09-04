@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +11,19 @@ public class SpacecraftManager : MonoBehaviour
     [Header("Default Configs")]
     [SerializeField] private SpacecraftMovementStats defaultStats;  // Default movement stats to apply at spawn
     [SerializeField] private GameObject defaultSkinPrefab;          // Default skin prefab to instantiate
+
+
+    [Header("Data Sources")]
+    [Tooltip("Spacecrafts SO list to resolve ID -> SO on load")]
+    [SerializeField] private ItemSOList spacecraftList; // Must be Category = Spacecrafts
+
+    [Header("Live Store Hook (optional)")]
+    [Tooltip("If there is a StoreManager in the scene and you want to respond to Equip during gameplay")]
+    [SerializeField] private StoreManager store; // Optional
+    [SerializeField] private bool listenToStoreLive = false;
+
+    private bool _configured; 
+    public bool IsConfigured => _configured;
 
     private SpacecraftMovement movement;    // Handles physics and control logic
     private SpacecraftSkin skin;            // Current active skin instance
@@ -25,14 +38,45 @@ public class SpacecraftManager : MonoBehaviour
     public event EventHandler OnBoostStart;
     public event EventHandler OnBoostEnd;
 
-    private void Start()
+    private void Awake()
     {
         FindModules();
-        ApplyDefaultStats();
         HookMovementEvents();
+    }
 
-        if (defaultSkinPrefab != null)
-            ReplaceSkin(defaultSkinPrefab);
+    private void Start()
+    {
+        // אם לא קונפגו ידנית לפני Start (למשל ע"י ספאונר), נטען מהשמירה
+        if (!_configured)
+        {
+            if (!TryConfigureFromEquippedSave())
+                ApplyFallbackDefaults();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (listenToStoreLive && store != null)
+            store.OnEquippedChanged += HandleEquippedChanged; // ← הרשמה
+    }
+
+    private void OnDisable()
+    {
+        if (store != null)
+            store.OnEquippedChanged -= HandleEquippedChanged; // ← ביטול הרשמה
+    }
+
+    public void ConfigureFromItem(SpacecraftItemSO item)
+    {
+        if (item == null) return;
+
+        if (item.movementStats != null)
+            ApplyMovementStats(item.movementStats);
+
+        if (item.skinPrefab != null)
+            ReplaceSkin(item.skinPrefab);
+
+        _configured = true;
     }
 
     /// <summary>
@@ -44,6 +88,59 @@ public class SpacecraftManager : MonoBehaviour
         skin = GetComponentInChildren<SpacecraftSkin>();
         rb = GetComponent<Rigidbody2D>();
     }
+
+    private void ApplyFallbackDefaults()
+    {
+        if (movement != null && defaultStats != null)
+            movement.ApplyStats(defaultStats);
+
+        if (defaultSkinPrefab != null)
+            ReplaceSkin(defaultSkinPrefab);
+    }
+
+    /// <summary>
+    /// טוען את ה-Equipped מהשמירה ומקנפג את הספינה.
+    /// מחזיר true אם הצליח.
+    /// </summary>
+    private bool TryConfigureFromEquippedSave()
+    {
+        // טען שמירה
+        if (!SaveLoadManager.Load<GameSaveData>(StoreManager.SAVE_FILE_NAME, out var data))
+            return false;
+
+        if (data.Equipped == null) return false;
+
+        // מצא Equipped בקטגוריית Spacecrafts
+        var eq = data.Equipped.Find(e => e.Category == StoreCategory.Spacecrafts);
+        if (eq == null || string.IsNullOrEmpty(eq.ItemId)) return false;
+
+        // פענוח ID -> SO דרך הרשימה
+        if (spacecraftList == null)
+        {
+            Debug.LogWarning("SpacecraftManager: spacecraftList is not assigned; cannot resolve equipped item.");
+            return false;
+        }
+
+        var so = spacecraftList.GetItemById(eq.ItemId) as SpacecraftItemSO;
+        if (so == null)
+        {
+            Debug.LogWarning($"SpacecraftManager: equipped spacecraft id '{eq.ItemId}' not found in ItemSOList.");
+            return false;
+        }
+
+        ConfigureFromItem(so);
+        return true;
+    }
+
+    private void HandleEquippedChanged(StoreCategory category, BaseItemSO item)
+    {
+        if (category != StoreCategory.Spacecrafts) return;
+
+        // בזמן אמת: אם עברנו לצייד חללית אחרת, החלף Skin/Stats
+        var so = item as SpacecraftItemSO;
+        if (so != null) ConfigureFromItem(so);
+    }
+
 
     /// <summary>
     /// Applies default movement stats if available.
@@ -107,6 +204,19 @@ public class SpacecraftManager : MonoBehaviour
         if (movement == null || stats == null) return;
         movement.ApplyStats(stats);
     }
+
+    //public void ConfigureFromDefinition(SpacecraftDefinition def)
+    //{
+    //    if (def == null) return;
+
+    //    if (def.movementStats != null)
+    //        ApplyMovementStats(def.movementStats);
+
+    //    if (def.skinPrefab != null)
+    //        ReplaceSkin(def.skinPrefab);
+
+    //    _configured = true;
+    //}
 
 
     /// <summary>

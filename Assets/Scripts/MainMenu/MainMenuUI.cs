@@ -1,11 +1,11 @@
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
-
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button shopButton;
 
     private void Awake()
     {
@@ -17,6 +17,11 @@ public class MainMenuUI : MonoBehaviour
         quitButton.onClick.AddListener(() =>
         {
             Application.Quit();
+        });
+
+        shopButton.onClick.AddListener(() =>
+        {
+            SceneLoader.LoadScene(SceneLoader.Scene.StoreScene);
         });
     }
 }

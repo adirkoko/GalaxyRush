@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae04f20547662f44bc8c3fe2e94733c, type: 3}
+  m_Name: ShipNeonViperDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftDefinition
+  id: shipneonviperdefinition
+  displayName: Neon Viper
+  icon: {fileID: 2459058481321755906, guid: cb0593de4704ce244ada901231aa72d8, type: 3}
+  price: 1000
+  movementStats: {fileID: 11400000, guid: 8464cb9d7ed396d449e029d7736231d0, type: 2}
+  skinPrefab: {fileID: 7760003387857995792, guid: 5f9533d028a7c9344821f24a0d91a070, type: 3}

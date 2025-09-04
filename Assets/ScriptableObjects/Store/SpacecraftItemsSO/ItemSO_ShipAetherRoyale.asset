@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae60efc9c29bb4846acb6a740970db26, type: 3}
+  m_Name: ItemSO_ShipAetherRoyale
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftItemSO
+  Id: ShipID_AetherRoyale
+  DisplayName: Aether Royale
+  Price: 1000
+  Icon: {fileID: -5713345018074360220, guid: c2823f5e6bfd5754aa9f181f88087ba3, type: 3}
+  Category: 5
+  movementStats: {fileID: 11400000, guid: fc550a05d76ad9f48b9480e4e84d21eb, type: 2}
+  skinPrefab: {fileID: 7760003387857995792, guid: 96a732b7ed38d164e9ac7a18dfb237aa, type: 3}
+  Owned: 0

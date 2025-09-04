@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae60efc9c29bb4846acb6a740970db26, type: 3}
+  m_Name: ItemSO_ShipDefault
+  m_EditorClassIdentifier: Assembly-CSharp::SpacecraftItemSO
+  Id: ShipID_Default
+  DisplayName: Default
+  Price: 1000
+  Icon: {fileID: 2257811276662547798, guid: 766ff8470b8217f4885d8dd4dfd83d41, type: 3}
+  Category: 5
+  movementStats: {fileID: 11400000, guid: 7323c58386cb7194da39c87986451ef8, type: 2}
+  skinPrefab: {fileID: 7760003387857995792, guid: ea096d8cf9becb04e8319ca66a0fb2a7, type: 3}
+  Owned: 1

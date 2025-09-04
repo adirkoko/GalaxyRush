@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0fbc046e91edc24c924886b61cd666b, type: 3}
+  m_Name: SpacecraftItemsList
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSOList
+  Category: 5
+  Items:
+  - {fileID: 11400000, guid: d15607fa2b8204747bde97f81fe16a96, type: 2}
+  - {fileID: 11400000, guid: 45e19f7dd0ed0ce4087b83ef1cc21213, type: 2}
+  - {fileID: 11400000, guid: eaefd7b19756ed84f831716034cf5cb9, type: 2}
+  - {fileID: 11400000, guid: 6af1814b79c6c854892cd4b1a6e3d46e, type: 2}
+  - {fileID: 11400000, guid: a8308aa075f1c4d41969f55bc5fd0104, type: 2}
+  - {fileID: 11400000, guid: b287d983149439743a8f82469542f297, type: 2}
+  - {fileID: 11400000, guid: b8757c60fb6e96b4ab70f531f947b577, type: 2}
+  - {fileID: 11400000, guid: 7584dfcdbf607ac40b0de822d43b31d3, type: 2}
+  - {fileID: 11400000, guid: c511ddb5517d9414b991795537ea0dbc, type: 2}
+  - {fileID: 11400000, guid: 6ec8783de565f284f9f7882b68e30911, type: 2}
+  - {fileID: 11400000, guid: 82fe7f7fba94f29489901789c3abda60, type: 2}

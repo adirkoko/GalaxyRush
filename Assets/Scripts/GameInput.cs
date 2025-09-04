@@ -14,6 +14,12 @@ public class GameInput : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         // Singleton pattern for global access
         Instance = this;
         inputActions = new InputActions();
@@ -21,6 +27,7 @@ public class GameInput : MonoBehaviour
 
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
+    private void OnDestroy() { if (inputActions != null) inputActions.Dispose(); }
 
     /// <summary>
     /// Returns movement vector from keyboard/controller or joystick.
@@ -44,7 +51,15 @@ public class GameInput : MonoBehaviour
                 input = joy;
         }
 
+        input = input.sqrMagnitude > 1f ? input.normalized : input;
         return input;
+    }
+
+    public int GetHorizontalStep()
+    {
+        if (inputActions.Player.SpacecraftRight.triggered) return +1;
+        if (inputActions.Player.SpacecraftLeft.triggered) return -1;
+        return 0;
     }
 
     // --- Other actions from Input System ---
