@@ -1,4 +1,4 @@
-// StoreManager.cs
+ן»¿// StoreManager.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +10,26 @@ public class StoreManager : MonoBehaviour
 {
     public const string SAVE_FILE_NAME = "store_save.json";
 
-    [Header("כסף")]
+    [Header("Credits")]
     [SerializeField] private int startCredits = 0;
     [SerializeField] private TextMeshProUGUI creditsText;
+
+    [Header("Starter Items")]
+    [Tooltip("Single-purchase items the player always owns and has equipped by default (e.g. the default spacecraft)")]
+    [SerializeField] private List<BaseItemSO> starterItems = new();
 
     [Serializable]
     public struct TabConfig
     {
         public StoreCategory Category;
         public Button TabButton;
-        public GameObject TabRoot; // מכיל CategoryStoreManager
+        public GameObject TabRoot; // Holds a CategoryStoreManager
     }
     [SerializeField] private List<TabConfig> tabs;
 
     [SerializeField] private InventoryManager inventory;
     [SerializeField] private Button backButton;
 
-    // אירועים לצרכנים אחרים במשחק
     public event Action<BaseItemSO> OnPurchaseSuccess;
     public event Action<BaseItemSO, string> OnPurchaseFailed;
     public event Action<int> OnMoneyChanged;
@@ -40,13 +43,18 @@ public class StoreManager : MonoBehaviour
 
     private void Awake()
     {
-        // חבר טאב־כפתור
         foreach (var t in tabs)
         {
             if (t.TabButton != null)
             {
                 var captured = t;
                 t.TabButton.onClick.AddListener(() => OpenTab(captured.Category));
+            }
+
+            if (t.TabRoot == null)
+            {
+                Debug.LogWarning($"StoreManager: TabRoot for {t.Category} is not assigned.");
+                continue;
             }
 
             var csm = t.TabRoot.GetComponent<CategoryStoreManager>();
@@ -64,11 +72,10 @@ public class StoreManager : MonoBehaviour
 
         LoadAll();
         UpdateMoneyUI();
-        // אתחל מנהלי קטגוריות
         foreach (var kv in _catManagers)
             kv.Value.Init(this);
 
-        // פתח טאב ראשון שאינו None
+        // Open the first tab that isn't None
         foreach (var t in tabs)
             if (t.Category != StoreCategory.None) { OpenTab(t.Category); break; }
     }
@@ -101,32 +108,26 @@ public class StoreManager : MonoBehaviour
 
     public bool TryPurchase(BaseItemSO item)
     {
-        // בדיקת כסף
         if (CurrentCredits < item.Price)
         {
             OnPurchaseFailed?.Invoke(item, "Not enough credits");
             return false;
         }
 
-        // לוגיקת Single/Multiple
         if (item.PurchaseMode == PurchaseType.Single && InventoryHas(item))
         {
             OnPurchaseFailed?.Invoke(item, "Already owned");
             return false;
         }
 
-        // הורדת כסף
         CurrentCredits -= item.Price;
         UpdateMoneyUI();
         OnMoneyChanged?.Invoke(CurrentCredits);
 
-        // עדכון אינבנטורי
         inventory.RegisterPurchase(item);
 
-        // אירוע הצלחה
         OnPurchaseSuccess?.Invoke(item);
 
-        // שמירה
         SaveAll();
 
         return true;
@@ -152,23 +153,50 @@ public class StoreManager : MonoBehaviour
 
     public void LoadAll()
     {
-        if (SaveLoadManager.Load<GameSaveData>(SAVE_FILE_NAME, out var data))
-        {
-            CurrentCredits = data.Credits == 0 ? startCredits : data.Credits;
-            inventory.ApplyLoadedData(data);
+        bool hasSave = SaveLoadManager.Load<GameSaveData>(SAVE_FILE_NAME, out var data);
 
-            _equippedByCategory.Clear();
-            if (data.Equipped != null)
+        // An existing save means the player already started, even with 0 credits left
+        CurrentCredits = hasSave ? data.Credits : startCredits;
+
+        // Always reset SO runtime state (even without a save) so no state leaks from a previous editor session
+        inventory.ApplyLoadedData(data);
+
+        _equippedByCategory.Clear();
+        if (data.Equipped != null)
+        {
+            foreach (var ce in data.Equipped)
+                if (!string.IsNullOrEmpty(ce.ItemId))
+                    _equippedByCategory[ce.Category] = ce.ItemId;
+        }
+
+        if (GrantStarterItems())
+            SaveAll();
+    }
+
+    /// <summary>
+    /// Ensures starter items are owned, and equipped when their category has nothing equipped.
+    /// Returns true if anything changed.
+    /// </summary>
+    private bool GrantStarterItems()
+    {
+        bool changed = false;
+        foreach (var item in starterItems)
+        {
+            if (item == null || item.PurchaseMode != PurchaseType.Single) continue;
+
+            if (!InventoryHas(item))
             {
-                foreach (var ce in data.Equipped)
-                    if (!string.IsNullOrEmpty(ce.ItemId))
-                        _equippedByCategory[ce.Category] = ce.ItemId;
+                inventory.RegisterPurchase(item);
+                changed = true;
+            }
+
+            if (item.CanBeEquipped && !_equippedByCategory.ContainsKey(item.Category))
+            {
+                _equippedByCategory[item.Category] = item.Id;
+                changed = true;
             }
         }
-        else
-        {
-            CurrentCredits = startCredits;
-        }
+        return changed;
     }
     #endregion
 
@@ -181,7 +209,7 @@ public class StoreManager : MonoBehaviour
     {
         if (item == null) return;
         if (!item.CanBeEquipped) return;
-        if (!InventoryHas(item)) return; // מותר לצייד רק אם בבעלות
+        if (!InventoryHas(item)) return;
 
         _equippedByCategory[item.Category] = item.Id;
         SaveAll();

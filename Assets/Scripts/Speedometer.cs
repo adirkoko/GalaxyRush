@@ -8,7 +8,7 @@ public class Speedometer : MonoBehaviour
     [SerializeField] private RectTransform background;
     [SerializeField] private RectTransform needle;
     [SerializeField] private TMP_Text speedText;
-    [SerializeField] private Image backgroundImage; // ⬅️ תמונה שמשנה צבע
+    [SerializeField] private Image backgroundImage; // Tinted by speed
 
     [Header("Target")]
     [SerializeField] private GameObject targetObject;
@@ -21,7 +21,7 @@ public class Speedometer : MonoBehaviour
     [SerializeField] private float needleSmoothing = 12f;
 
     [Header("Color Settings")]
-    [SerializeField] private Gradient speedColors; // ⬅️ בחר צבעים באינספקטור (למשל ירוק → צהוב → אדום)
+    [SerializeField] private Gradient speedColors; // e.g. green -> yellow -> red
     [SerializeField] private float colorSmoothing = 5f;
 
     private Rigidbody2D targetRb2D;
@@ -41,12 +41,15 @@ public class Speedometer : MonoBehaviour
         {
             Debug.LogWarning("Speedometer: targetObject not assigned.");
         }
+
+        // Start from the zero-speed color instead of transparent black
+        if (speedColors != null) currentColor = speedColors.Evaluate(0f);
     }
 
     private void FixedUpdate()
     {
         if (targetRb2D == null) return;
-        lastSpeed = targetRb2D.linearVelocity.magnitude; // יחידות Unity (מ'/שנייה)
+        lastSpeed = targetRb2D.linearVelocity.magnitude; // Unity units per second
     }
 
     private void Update()
@@ -78,10 +81,9 @@ public class Speedometer : MonoBehaviour
     {
         if (backgroundImage == null || speedColors == null) return;
 
-        float t = Mathf.Clamp01(speed / maxSpeed);
+        float t = maxSpeed > 0f ? Mathf.Clamp01(speed / maxSpeed) : 0f;
         Color targetColor = speedColors.Evaluate(t);
 
-        // החלקה של המעבר
         currentColor = Color.Lerp(currentColor, targetColor, 1f - Mathf.Exp(-colorSmoothing * Time.deltaTime));
         backgroundImage.color = currentColor;
     }

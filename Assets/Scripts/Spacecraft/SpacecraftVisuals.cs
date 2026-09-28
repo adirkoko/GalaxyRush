@@ -50,20 +50,43 @@ public class SpacecraftVisuals : MonoBehaviour
         if (manager != null)
         {
             // Movement events to control which thrusters fire
-            manager.OnThrustForward += (s, e) => EnableThrusters(true, true, true);
-            manager.OnRotateLeft += (s, e) => EnableThrusters(false, false, true);
-            manager.OnRotateRight += (s, e) => EnableThrusters(true, false, false);
-            manager.OnNoThrust += (s, e) => EnableThrusters(false, false, false);
+            manager.OnThrustForward += HandleThrustForward;
+            manager.OnRotateLeft += HandleRotateLeft;
+            manager.OnRotateRight += HandleRotateRight;
+            manager.OnNoThrust += HandleNoThrust;
 
             // Boost events to flare up thrusters, then reset
-            manager.OnBoostStart += (s, e) => BoostThrusters();
-            manager.OnBoostEnd += (s, e) => ResetThrusters();
+            manager.OnBoostStart += HandleBoostStart;
+            manager.OnBoostEnd += HandleBoostEnd;
         }
         else
         {
             Debug.LogError("SpacecraftVisuals: No SpacecraftManager found in parent!");
         }
     }
+
+    /// <summary>
+    /// Unsubscribes from the manager. Skins are destroyed when replaced,
+    /// so leaving handlers attached would leak them onto the manager.
+    /// </summary>
+    private void OnDestroy()
+    {
+        if (manager == null) return;
+
+        manager.OnThrustForward -= HandleThrustForward;
+        manager.OnRotateLeft -= HandleRotateLeft;
+        manager.OnRotateRight -= HandleRotateRight;
+        manager.OnNoThrust -= HandleNoThrust;
+        manager.OnBoostStart -= HandleBoostStart;
+        manager.OnBoostEnd -= HandleBoostEnd;
+    }
+
+    private void HandleThrustForward(object sender, System.EventArgs e) => EnableThrusters(true, true, true);
+    private void HandleRotateLeft(object sender, System.EventArgs e) => EnableThrusters(false, false, true);
+    private void HandleRotateRight(object sender, System.EventArgs e) => EnableThrusters(true, false, false);
+    private void HandleNoThrust(object sender, System.EventArgs e) => EnableThrusters(false, false, false);
+    private void HandleBoostStart(object sender, System.EventArgs e) => BoostThrusters();
+    private void HandleBoostEnd(object sender, System.EventArgs e) => ResetThrusters();
 
     /// <summary>
     /// Reads and stores the default particle system settings from the inspector
@@ -84,6 +107,8 @@ public class SpacecraftVisuals : MonoBehaviour
     /// <returns>A <see cref="ThrusterDefaults"/> struct containing the captured values.</returns>
     private ThrusterDefaults GetDefaults(ParticleSystem ps)
     {
+        if (ps == null) return default;
+
         var main = ps.main;
         var emission = ps.emission;
 

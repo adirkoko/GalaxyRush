@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 public class UIButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Scale Settings")]
-    [Tooltip("Multiplier applied to the button�s scale when pressed (e.g. 0.9 = shrink by 10%).")]
+    [Tooltip("Multiplier applied to the button’s scale when pressed (e.g. 0.9 = shrink by 10%).")]
     [SerializeField] private float pressedScale = 0.9f;
 
     [Tooltip("Interpolation speed for scaling animation (higher = snappier).")]
@@ -23,6 +23,13 @@ public class UIButtonScaler : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         // Cache the original scale at startup
         originalScale = transform.localScale;
         targetScale = originalScale;
+    }
+
+    private void OnDisable()
+    {
+        // If the button is hidden mid-press (e.g. scene/panel change) it would stay shrunk
+        targetScale = originalScale;
+        transform.localScale = originalScale;
     }
 
     private void Update()

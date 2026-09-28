@@ -16,7 +16,6 @@ public class ItemMono : MonoBehaviour
     protected BaseItemSO _item;
     protected CategoryStoreManager _owner;
 
-    // ⭐ הפוך ל-virtual כדי שיורשים יוכלו להרחיב
     public virtual void Setup(BaseItemSO item, CategoryStoreManager owner, int currentMoney, bool ownedOrHasQty)
     {
         _item = item;
@@ -42,34 +41,33 @@ public class ItemMono : MonoBehaviour
     {
         bool canAfford = money >= _item.Price;
         bool canEquip = _item.CanBeEquipped;
-        bool isOwned = ownedOrHasQty; // עבור Single זה "Owned", עבור Multiple זה "Quantity>0"
+        bool isOwned = ownedOrHasQty; // Single: Owned, Multiple: Quantity > 0
         bool isEquipped = canEquip && _owner.Store.IsEquipped(_item);
 
         if (!isOwned)
         {
-            // מצב "לפני קנייה"
+            // Not owned yet: Buy state
             if (buyButton) buyButton.interactable = canAfford;
             if (buyButtonLabel) buyButtonLabel.text = "Buy";
             if (purchasedBadge) purchasedBadge.SetActive(false);
             return;
         }
 
-        // כאן: בבעלות
+        // Owned
         if (canEquip)
         {
-            // מצב Select/Equipped
-            if (buyButton) buyButton.interactable = !isEquipped; // לא ניתן ללחוץ על Equipped
+            // Select / Equipped state
+            if (buyButton) buyButton.interactable = !isEquipped;
             if (buyButtonLabel) buyButtonLabel.text = isEquipped ? "Equipped" : "Select";
-            if (purchasedBadge) purchasedBadge.SetActive(isEquipped); // אם רוצים, התג מציין Equipped
+            if (purchasedBadge) purchasedBadge.SetActive(isEquipped); // Badge marks the equipped item
         }
         else
         {
-            // פריט שלא ניתן לצייד (למשל Consumable)
+            // Owned but not equippable (e.g. Consumable)
             if (buyButton) buyButton.interactable = false;
             if (buyButtonLabel) buyButtonLabel.text = "Owned";
             if (purchasedBadge) purchasedBadge.SetActive(true);
         }
-        Debug.Log($"{_item.Id} → text={buyButtonLabel?.text} isEquipped={_owner.Store.IsEquipped(_item)}");
     }
 
     public BaseItemSO GetItem() => _item;

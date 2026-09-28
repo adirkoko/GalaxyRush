@@ -19,4 +19,3 @@ MonoBehaviour:
   Category: 5
   movementStats: {fileID: 11400000, guid: 5535f65656e5d48438748092b238107a, type: 2}
   skinPrefab: {fileID: 7760003387857995792, guid: bc4a84c7b2e6e8f4580621900d20e166, type: 3}
-  Owned: 0

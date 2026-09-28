@@ -8,6 +8,6 @@ public class ItemSOList : ScriptableObject
     public StoreCategory Category = StoreCategory.None;
     public List<BaseItemSO> Items = new();
 
-    public BaseItemSO GetItemById(string id) => Items.Find(i => i.Id == id);
+    public BaseItemSO GetItemById(string id) => Items.Find(i => i != null && i.Id == id);
     public List<BaseItemSO> GetAllAvailableItems() => Items;
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+ן»¿using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponItem", menuName = "Store/Items/Weapon")]
 public class WeaponItemSO : BaseItemSO
@@ -8,8 +8,8 @@ public class WeaponItemSO : BaseItemSO
     public float FireRate;
     public string AmmoType;
 
-    // מצב ריצה לצורך שמירה/טעינה
-    [HideInInspector] public bool Owned;
+    // Runtime state only, loaded from the save file
+    [System.NonSerialized] public bool Owned;
 
     public override PurchaseType PurchaseMode => PurchaseType.Single;
 

@@ -1,4 +1,4 @@
-// SaveDataModels.cs
+ן»¿// SaveDataModels.cs
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +24,7 @@ public class CategoryEquipData
     public string ItemId;
 }
 
-// שמירה כוללת של המשחק/חנות
+// Root save data for the game/store
 [Serializable]
 public class GameSaveData
 {
@@ -34,8 +34,4 @@ public class GameSaveData
     public List<ConsumableSaveData> Consumables = new();
     public List<SkinSaveData> Skins = new();
     public List<SpacecraftSaveData> Spacecrafts = new();
-    
-
-    public string EquippedWeaponId;
-    public string SelectedSpacecraftId;
 }

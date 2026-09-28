@@ -1,4 +1,4 @@
-using UnityEngine;
+ן»¿using UnityEngine;
 
 public abstract class BaseItemSO : ScriptableObject
 {
@@ -10,10 +10,9 @@ public abstract class BaseItemSO : ScriptableObject
     public StoreCategory Category = StoreCategory.None;
     public virtual bool CanBeEquipped => PurchaseMode == PurchaseType.Single;
 
-    // לקביעת התנהגות קנייה
     public abstract PurchaseType PurchaseMode { get; }
 
-    // לשמירה/טעינה ייחודית לכל סוג
+    // Per-type save/load
     public abstract ItemSaveData GetSaveData();
     public abstract void LoadSaveData(ItemSaveData data);
 }

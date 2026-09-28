@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,6 +11,7 @@ public class SpacecraftSoundManager : MonoBehaviour
     [Header("Base Settings")]
     [SerializeField, Range(0f, 1f)] private float baseVolume = 0.6f;
     [SerializeField, Range(0.1f, 3f)] private float basePitch = 1.0f;
+    [SerializeField, Range(0f, 1f)] private float idleHumVolume = 0.2f;
 
     [Header("Boost Multipliers")]
     [SerializeField] private float boostVolumeMul = 2.0f;
@@ -20,17 +22,20 @@ public class SpacecraftSoundManager : MonoBehaviour
     [SerializeField] private float rotatePitchMul = 0.8f;
 
     private AudioSource engineSource;
+    private AudioSource idleSource;
     private SpacecraftManager manager;
 
-    private enum EngineState { Idle, Forward, Rotate, Boost }
-    private EngineState currentState = EngineState.Idle;
-    private EngineState prevState = EngineState.Idle;
+    private enum EngineState { Idle, Forward, Rotate }
+    private EngineState engineState = EngineState.Idle;
+    private bool isBoosting; // Boost is tracked separately so it survives thrust/rotate changes
 
     private void Awake()
     {
-        engineSource = gameObject.AddComponent<AudioSource>();
+        // Use the required AudioSource instead of adding a second one
+        engineSource = GetComponent<AudioSource>();
         engineSource.loop = true;
         engineSource.playOnAwake = false;
+        engineSource.clip = engineLoop;
     }
 
     private void Start()
@@ -45,98 +50,93 @@ public class SpacecraftSoundManager : MonoBehaviour
 
         SubscribeToEvents();
 
-        if (engineLoop != null)
-        {
-            engineSource.clip = engineLoop;
-            engineSource.volume = baseVolume;
-            engineSource.pitch = basePitch;
-            engineSource.Stop();
-        }
-
         if (idleHum != null)
         {
-            AudioSource idle = gameObject.AddComponent<AudioSource>();
-            idle.clip = idleHum;
-            idle.loop = true;
-            idle.volume = 0.2f;
-            idle.Play();
+            idleSource = gameObject.AddComponent<AudioSource>();
+            idleSource.clip = idleHum;
+            idleSource.loop = true;
+            idleSource.volume = idleHumVolume;
+            idleSource.Play();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (manager == null) return;
+
+        manager.OnThrustForward -= HandleThrustForward;
+        manager.OnRotateLeft -= HandleRotate;
+        manager.OnRotateRight -= HandleRotate;
+        manager.OnNoThrust -= HandleNoThrust;
+        manager.OnBoostStart -= HandleBoostStart;
+        manager.OnBoostEnd -= HandleBoostEnd;
     }
 
     private void SubscribeToEvents()
     {
-        manager.OnThrustForward += (s, e) => ApplyForwardSound();
-        manager.OnRotateLeft += (s, e) => ApplyRotateSound();
-        manager.OnRotateRight += (s, e) => ApplyRotateSound();
-        manager.OnNoThrust += (s, e) => StopEngineLoop();
-
-        manager.OnBoostStart += (s, e) => ApplyBoostSound();
-        manager.OnBoostEnd += (s, e) => EndBoostSound();
+        manager.OnThrustForward += HandleThrustForward;
+        manager.OnRotateLeft += HandleRotate;
+        manager.OnRotateRight += HandleRotate;
+        manager.OnNoThrust += HandleNoThrust;
+        manager.OnBoostStart += HandleBoostStart;
+        manager.OnBoostEnd += HandleBoostEnd;
     }
 
-    private void ApplyForwardSound()
-    {
-        if (currentState == EngineState.Boost) return; // אל תדרוס בוסט
-        currentState = EngineState.Forward;
+    private void HandleThrustForward(object sender, EventArgs e) => SetEngineState(EngineState.Forward);
+    private void HandleRotate(object sender, EventArgs e) => SetEngineState(EngineState.Rotate);
+    private void HandleNoThrust(object sender, EventArgs e) => SetEngineState(EngineState.Idle);
 
-        engineSource.volume = baseVolume;
-        engineSource.pitch = basePitch;
-        if (!engineSource.isPlaying && engineLoop != null)
-            engineSource.Play();
+    private void HandleBoostStart(object sender, EventArgs e)
+    {
+        isBoosting = true;
+        RefreshEngineSound();
     }
 
-    private void ApplyRotateSound()
+    private void HandleBoostEnd(object sender, EventArgs e)
     {
-        if (currentState == EngineState.Boost) return; // אל תדרוס בוסט
-        currentState = EngineState.Rotate;
-
-        engineSource.volume = baseVolume * rotateVolumeMul;
-        engineSource.pitch = basePitch * rotatePitchMul;
-        if (!engineSource.isPlaying && engineLoop != null)
-            engineSource.Play();
+        isBoosting = false;
+        RefreshEngineSound();
     }
 
-    private void StopEngineLoop()
+    private void SetEngineState(EngineState state)
     {
-        if (engineSource.isPlaying)
-            engineSource.Stop();
-        currentState = EngineState.Idle;
+        // Thruster events arrive every physics tick; only react to actual changes
+        if (engineState == state) return;
+        engineState = state;
+        RefreshEngineSound();
     }
 
-    private void ApplyBoostSound()
+    /// <summary>
+    /// Applies volume/pitch for the current engine state and boost flag.
+    /// Boost only amplifies the engine while it is already running.
+    /// </summary>
+    private void RefreshEngineSound()
     {
-        if (currentState != EngineState.Boost)
-            prevState = currentState; // Save previous state
+        if (engineLoop == null) return;
 
-        currentState = EngineState.Boost;
-
-        // Only amplify if engine was already active
-        if (prevState == EngineState.Forward || prevState == EngineState.Rotate)
+        if (engineState == EngineState.Idle)
         {
-            engineSource.volume = baseVolume * boostVolumeMul;
-            engineSource.pitch = basePitch * boostPitchMul;
-
-            if (!engineSource.isPlaying && engineLoop != null)
-                engineSource.Play();
+            if (engineSource.isPlaying) engineSource.Stop();
+            return;
         }
-    }
 
+        float volume = baseVolume;
+        float pitch = basePitch;
 
-    private void EndBoostSound()
-    {
-        currentState = prevState;
-
-        switch (prevState)
+        if (engineState == EngineState.Rotate)
         {
-            case EngineState.Forward:
-                ApplyForwardSound();
-                break;
-            case EngineState.Rotate:
-                ApplyRotateSound();
-                break;
-            case EngineState.Idle:
-                break;
+            volume *= rotateVolumeMul;
+            pitch *= rotatePitchMul;
         }
-    }
 
+        if (isBoosting)
+        {
+            volume *= boostVolumeMul;
+            pitch *= boostPitchMul;
+        }
+
+        engineSource.volume = volume;
+        engineSource.pitch = pitch;
+        if (!engineSource.isPlaying) engineSource.Play();
+    }
 }

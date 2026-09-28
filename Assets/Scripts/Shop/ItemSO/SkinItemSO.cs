@@ -1,4 +1,4 @@
-// SkinItemSO.cs
+﻿// SkinItemSO.cs
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SkinItem", menuName = "Store/Items/Skin")]
@@ -7,7 +7,8 @@ public class SkinItemSO : BaseItemSO
     [Header("Skin Data")]
     public Color PrimaryColor = Color.white;
 
-    [HideInInspector] public bool Owned;
+    // Runtime state only, loaded from the save file
+    [System.NonSerialized] public bool Owned;
 
     public override PurchaseType PurchaseMode => PurchaseType.Single;
 

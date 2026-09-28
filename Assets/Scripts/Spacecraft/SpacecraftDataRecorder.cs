@@ -147,7 +147,7 @@ public class SpacecraftDataRecorder : MonoBehaviour
 
     private void Update()
     {
-        if (!sessionActive || rb == null) return;
+        if (!sessionActive || rb == null || GameInput.Instance == null) return;
         float dt = Time.deltaTime;
         SessionTime += dt;
 

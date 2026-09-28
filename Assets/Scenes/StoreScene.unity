@@ -896,6 +896,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StoreManager
   startCredits: 10000
   creditsText: {fileID: 1933240786}
+  starterItems:
+  - {fileID: 11400000, guid: 6af1814b79c6c854892cd4b1a6e3d46e, type: 2}
   tabs:
   - Category: 5
     TabButton: {fileID: 241279614}

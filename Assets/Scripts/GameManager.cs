@@ -10,10 +10,18 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        backButton.onClick.AddListener(() =>
+        if (backButton != null)
         {
-            SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
-        });
+            backButton.onClick.AddListener(() =>
+            {
+                SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
+            });
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
     }
 
     private void Update()

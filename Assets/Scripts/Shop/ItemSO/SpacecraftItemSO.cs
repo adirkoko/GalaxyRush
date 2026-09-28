@@ -1,17 +1,17 @@
-using UnityEngine;
+ן»¿using UnityEngine;
 
 [CreateAssetMenu(fileName = "SpacecraftItem", menuName = "Store/Items/Spacecraft")]
 public class SpacecraftItemSO : BaseItemSO
 {
     [Header("Loadout")]
-    public SpacecraftMovementStats movementStats; // אותו טייפ שהיה לך
-    public GameObject skinPrefab;                 // ויזואל
+    public SpacecraftMovementStats movementStats;
+    public GameObject skinPrefab;
 
-    [HideInInspector] public bool Owned;
+    // Runtime state only, loaded from the save file
+    [System.NonSerialized] public bool Owned;
 
     public override PurchaseType PurchaseMode => PurchaseType.Single;
 
-    // רצוי שהקטגוריה תהיה מקובעת כאן:
     private void Reset()
     {
         Category = StoreCategory.Spacecrafts;
@@ -19,7 +19,7 @@ public class SpacecraftItemSO : BaseItemSO
 
     private void OnValidate()
     {
-        // שמירה על תאימות לישן: יצירת Id אוטומטי אם חסר
+        // Auto-generate an Id if missing
         if (string.IsNullOrWhiteSpace(Id))
             Id = name.Replace(" ", "_").ToLowerInvariant();
         if (Category == StoreCategory.None)

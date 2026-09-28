@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -15,7 +15,7 @@ public class SpacecraftMovementStats : ScriptableObject
     [Tooltip("Base forward acceleration force applied when thrusting.")]
     [SerializeField] private float accel = 12f;
 
-    [Tooltip("Rate at which throttle increases (0–1 per second).")]
+    [Tooltip("Rate at which throttle increases (0â€“1 per second).")]
     [SerializeField] private float throttleAccel = 3.2f;
 
     [Tooltip("Rate at which throttle decreases when no input is given.")]
@@ -64,7 +64,7 @@ public class SpacecraftMovementStats : ScriptableObject
     [Tooltip("Energy regenerated per second when Afterburner is not active.")]
     [SerializeField] private float boostRegenPerSec = 0.6f;
 
-    [Tooltip("Minimum fraction (0–1) of boost energy required before Afterburner can activate.")]
+    [Tooltip("Minimum fraction (0â€“1) of boost energy required before Afterburner can activate.")]
     [SerializeField, Range(0f, 1f)] private float boostMinFractionToActivate = 0.2f;
 
     // ---------------- Dash ----------------
@@ -75,7 +75,7 @@ public class SpacecraftMovementStats : ScriptableObject
     [Tooltip("Charge regenerated per second when not dashing.")]
     [SerializeField] private float dashChargeRegenPerSec = 30f;
 
-    [Tooltip("Minimum charge fraction (0–1) required to allow a dash.")]
+    [Tooltip("Minimum charge fraction (0â€“1) required to allow a dash.")]
     [SerializeField, Range(0f, 1f)] private float dashMinFractionToActivate = 0.2f;
 
     [Tooltip("Impulse at 0% charge (use > 0 to guarantee a small dash).")]
@@ -91,14 +91,14 @@ public class SpacecraftMovementStats : ScriptableObject
     [SerializeField] private float dashOverspeedMultiplier = 1.35f;
 
     [Header("Improved Control (Slip Reduction)")]
-    [Tooltip("How strongly the ship resists sideways sliding (0 = none, 2–6 = stronger).")]
+    [Tooltip("How strongly the ship resists sideways sliding (0 = none, 2â€“6 = stronger).")]
     [SerializeField] private float lateralGrip = 0.0f;
 
     [Tooltip("If true, grip is applied only when player provides input.")]
     [SerializeField] private bool gripOnlyWhenInput = true;
 
     [Header("High-Speed Stability")]
-    [Tooltip("Factor (0–1) controlling how much steering is reduced at high speed.")]
+    [Tooltip("Factor (0â€“1) controlling how much steering is reduced at high speed.")]
     [SerializeField] private float highSpeedStability = 0.6f;
 
     [Tooltip("Clamp factor for steering at top speed (e.g. 0.6 = 60% turn rate).")]

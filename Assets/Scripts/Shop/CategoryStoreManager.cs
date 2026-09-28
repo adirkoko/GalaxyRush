@@ -1,4 +1,4 @@
-// CategoryStoreManager.cs
+ן»¿// CategoryStoreManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,11 +55,11 @@ public class CategoryStoreManager : MonoBehaviour
     {
         if (!_store.InventoryHas(item))
         {
-            _store.TryPurchase(item);           // קנייה
+            _store.TryPurchase(item);
         }
         else if (item.CanBeEquipped)
         {
-            _store.EquipItem(item);             // ציוד
+            _store.EquipItem(item);
         }
     }
 
@@ -92,12 +92,8 @@ public class CategoryStoreManager : MonoBehaviour
 
     private void HandleEquippedChanged(StoreCategory cat, BaseItemSO _)
     {
-        Debug.Log($"aaaaaaaaa  {cat}-=-=-=-{Category}");
-
-        if (cat != Category) return; // רק הטאב הרלוונטי
+        if (cat != Category) return; // Only refresh the affected tab
         foreach (var mono in _spawned)
             mono.UpdateVisual(_store.CurrentCredits, _store.InventoryHas(mono.GetItem()));
-
-        Debug.Log($"Refresh UI for {Category} ({_spawned.Count} cards)");
     }
 }

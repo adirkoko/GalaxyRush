@@ -71,6 +71,7 @@ public sealed class BoostController
     /// Maximum boost capacity (in units).
     /// </summary>
     public float CapacityUnits =>
+        stats == null ? 0f :
         stats.BoostType == SpacecraftMovementStats.BoostMode.Afterburner
             ? stats.BoostCapacity
             : stats.DashChargeCapacity;

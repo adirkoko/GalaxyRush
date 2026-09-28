@@ -7,10 +7,9 @@ public class SpacecraftItemMono : ItemMono
     [SerializeField] private TextMeshProUGUI speedText;
     [SerializeField] private TextMeshProUGUI accelText;
 
-    // אופציונלי: GO עם מסגרת/אייקון/זוהר כשמצויד
+    // Optional frame/glow shown while this spacecraft is equipped
     [SerializeField] private GameObject equippedFx;
 
-    // נקרא מתוך CategoryStoreManager.BuildUI → Setup(...)
     public override void Setup(BaseItemSO item, CategoryStoreManager owner, int currentMoney, bool ownedOrHasQty)
     {
         base.Setup(item, owner, currentMoney, ownedOrHasQty);
@@ -18,9 +17,8 @@ public class SpacecraftItemMono : ItemMono
         var sc = item as SpacecraftItemSO;
         if (sc != null && sc.movementStats != null)
         {
-            // עדכן לשמות השדות המדויקים אצלך (דוגמה: maxSpeed / acceleration)
-            if (speedText) speedText.text = $"Speed: {sc.movementStats}";
-            if (accelText) accelText.text = $"Accel: {sc.movementStats}";
+            if (speedText) speedText.text = $"Speed: {sc.movementStats.MaxSpeed:0}";
+            if (accelText) accelText.text = $"Accel: {sc.movementStats.Accel:0}";
         }
 
         RefreshEquippedFx();

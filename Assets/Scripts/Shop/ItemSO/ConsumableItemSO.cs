@@ -1,4 +1,4 @@
-// ConsumableItemSO.cs
+ן»¿// ConsumableItemSO.cs
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ConsumableItem", menuName = "Store/Items/Consumable")]
@@ -7,8 +7,8 @@ public class ConsumableItemSO : BaseItemSO
     [Header("Consumable Data")]
     public int HealAmount;
 
-    // מצב ריצה
-    [HideInInspector] public int Quantity;
+    // Runtime state only, loaded from the save file
+    [System.NonSerialized] public int Quantity;
 
     public override PurchaseType PurchaseMode => PurchaseType.Multiple;
 

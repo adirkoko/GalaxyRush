@@ -25,9 +25,15 @@ public class GameInput : MonoBehaviour
         inputActions = new InputActions();
     }
 
-    private void OnEnable() => inputActions.Enable();
-    private void OnDisable() => inputActions.Disable();
-    private void OnDestroy() { if (inputActions != null) inputActions.Dispose(); }
+    // inputActions is null on a duplicate instance that is being destroyed in Awake
+    private void OnEnable() => inputActions?.Enable();
+    private void OnDisable() => inputActions?.Disable();
+
+    private void OnDestroy()
+    {
+        inputActions?.Dispose();
+        if (Instance == this) Instance = null;
+    }
 
     /// <summary>
     /// Returns movement vector from keyboard/controller or joystick.

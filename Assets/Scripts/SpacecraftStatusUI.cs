@@ -27,7 +27,7 @@ public class SpacecraftStatusUI : MonoBehaviour
     [SerializeField] private float boostFlashDuration = 0.12f;
 
     [Header("Energy Display")]
-    [SerializeField] private EnergyDisplayMode energyDisplayMode = EnergyDisplayMode.ValueOutOfMax; // ⬅️ בחירה באינספקטור
+    [SerializeField] private EnergyDisplayMode energyDisplayMode = EnergyDisplayMode.ValueOutOfMax;
     [SerializeField] private string percentFormat = "{0:0}%";
     [SerializeField] private string valueFormat = "{0:0}/{1:0}"; 
 
@@ -67,7 +67,7 @@ public class SpacecraftStatusUI : MonoBehaviour
     {
         if (manager == null) return;
 
-        // --- אנרגיה ---
+        // --- Energy ---
         float cap = Mathf.Max(DenominatorEpsilon, manager.BoostCapacityUnits);
         float cur = Mathf.Clamp(manager.BoostEnergyUnits, 0f, cap);
         float fill = cap > 0f ? cur / cap : 0f;
@@ -78,7 +78,7 @@ public class SpacecraftStatusUI : MonoBehaviour
         {
             energySlider.value = energyUI;
 
-            // שליפת ה-Fill של הסליידר ושינוי הצבע שלו לפי הגרדיאנט
+            // Tint the slider fill by the energy gradient
             if (energySlider.fillRect != null)
             {
                 var fillImage = energySlider.fillRect.GetComponent<Image>();
@@ -104,11 +104,11 @@ public class SpacecraftStatusUI : MonoBehaviour
             }
         }
 
-        // --- מהירות ---
+        // --- Speed ---
         speedUI = Smooth(speedUI, manager.CurrentSpeed, uiSmoothing, Time.deltaTime);
         if (speedText != null) speedText.text = string.Format(speedFormat, speedUI);
 
-        // --- אייקון Boost ---
+        // --- Boost icon ---
         UpdateBoostIcon(manager.CurrentBoostMode, manager.IsBoosting, Time.deltaTime);
     }
 

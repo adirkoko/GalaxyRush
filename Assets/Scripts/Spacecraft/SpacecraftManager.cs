@@ -46,7 +46,7 @@ public class SpacecraftManager : MonoBehaviour
 
     private void Start()
     {
-        // אם לא קונפגו ידנית לפני Start (למשל ע"י ספאונר), נטען מהשמירה
+        // If not configured before Start (e.g. by a spawner), load from the save
         if (!_configured)
         {
             if (!TryConfigureFromEquippedSave())
@@ -57,13 +57,13 @@ public class SpacecraftManager : MonoBehaviour
     private void OnEnable()
     {
         if (listenToStoreLive && store != null)
-            store.OnEquippedChanged += HandleEquippedChanged; // ← הרשמה
+            store.OnEquippedChanged += HandleEquippedChanged;
     }
 
     private void OnDisable()
     {
         if (store != null)
-            store.OnEquippedChanged -= HandleEquippedChanged; // ← ביטול הרשמה
+            store.OnEquippedChanged -= HandleEquippedChanged;
     }
 
     public void ConfigureFromItem(SpacecraftItemSO item)
@@ -99,22 +99,21 @@ public class SpacecraftManager : MonoBehaviour
     }
 
     /// <summary>
-    /// טוען את ה-Equipped מהשמירה ומקנפג את הספינה.
-    /// מחזיר true אם הצליח.
+    /// Loads the equipped spacecraft from the save and configures the ship.
+    /// Returns true on success.
     /// </summary>
     private bool TryConfigureFromEquippedSave()
     {
-        // טען שמירה
         if (!SaveLoadManager.Load<GameSaveData>(StoreManager.SAVE_FILE_NAME, out var data))
             return false;
 
         if (data.Equipped == null) return false;
 
-        // מצא Equipped בקטגוריית Spacecrafts
+        // Find the equipped item in the Spacecrafts category
         var eq = data.Equipped.Find(e => e.Category == StoreCategory.Spacecrafts);
         if (eq == null || string.IsNullOrEmpty(eq.ItemId)) return false;
 
-        // פענוח ID -> SO דרך הרשימה
+        // Resolve ID -> SO via the list
         if (spacecraftList == null)
         {
             Debug.LogWarning("SpacecraftManager: spacecraftList is not assigned; cannot resolve equipped item.");
@@ -136,20 +135,11 @@ public class SpacecraftManager : MonoBehaviour
     {
         if (category != StoreCategory.Spacecrafts) return;
 
-        // בזמן אמת: אם עברנו לצייד חללית אחרת, החלף Skin/Stats
+        // Live update: swap skin/stats when a different spacecraft is equipped
         var so = item as SpacecraftItemSO;
         if (so != null) ConfigureFromItem(so);
     }
 
-
-    /// <summary>
-    /// Applies default movement stats if available.
-    /// </summary>
-    private void ApplyDefaultStats()
-    {
-        if (movement != null && defaultStats != null)
-            movement.ApplyStats(defaultStats);
-    }
 
     /// <summary>
     /// Subscribes to movement events and re-exposes them
@@ -204,20 +194,6 @@ public class SpacecraftManager : MonoBehaviour
         if (movement == null || stats == null) return;
         movement.ApplyStats(stats);
     }
-
-    //public void ConfigureFromDefinition(SpacecraftDefinition def)
-    //{
-    //    if (def == null) return;
-
-    //    if (def.movementStats != null)
-    //        ApplyMovementStats(def.movementStats);
-
-    //    if (def.skinPrefab != null)
-    //        ReplaceSkin(def.skinPrefab);
-
-    //    _configured = true;
-    //}
-
 
     /// <summary>
     /// Current active boost mode of the movement module.

@@ -1,16 +1,12 @@
-// InventoryManager.cs
+ן»¿// InventoryManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    [Header("מקורות SO (למיפוי Id -> SO)")]
+    [Header("SO Sources (Id -> SO lookup)")]
     [SerializeField] private List<ItemSOList> categoryLists;
 
-    public string EquippedWeaponId { get; private set; }
-    public string SelectedSpacecraftId { get; private set; }
-
-    // API לקריאה
     public bool IsOwned(string itemId)
     {
         var item = FindItem(itemId);
@@ -25,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     {
         var item = FindItem(itemId);
         if (item is ConsumableItemSO c) return c.Quantity;
-        // לכל השאר (Single) – 1 אם בבעלות, אחרת 0:
+        // Single items: 1 if owned, otherwise 0
         return IsOwned(itemId) ? 1 : 0;
     }
 
@@ -35,8 +31,6 @@ public class InventoryManager : MonoBehaviour
         {
             case WeaponItemSO w:
                 w.Owned = true;
-                if (string.IsNullOrEmpty(EquippedWeaponId)) 
-                    EquippedWeaponId = w.Id;
                 break;
 
             case SkinItemSO s:
@@ -49,17 +43,16 @@ public class InventoryManager : MonoBehaviour
 
             case SpacecraftItemSO sc:
                 sc.Owned = true;
-                if (string.IsNullOrEmpty(SelectedSpacecraftId))
-                    SelectedSpacecraftId = sc.Id;
                 break;
         }
     }
 
     public void ApplyLoadedData(GameSaveData data)
     {
-        // אפס מצב קיים בזיכרון
+        // Reset runtime state before applying the save
         foreach (var list in categoryLists)
         {
+            if (list == null) continue;
             foreach (var it in list.Items)
             {
                 if (it is WeaponItemSO w) w.Owned = false;
@@ -69,21 +62,18 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // העמסה לפי שמירה
-        foreach (var w in data.Weapons)
+        // Lists may be null in older save files
+        foreach (var w in data.Weapons ?? new())
             if (FindItem(w.ItemId) is WeaponItemSO sw) sw.Owned = w.Owned;
 
-        foreach (var c in data.Consumables)
+        foreach (var c in data.Consumables ?? new())
             if (FindItem(c.ItemId) is ConsumableItemSO sc) sc.Quantity = c.Quantity;
 
-        foreach (var s in data.Skins)
+        foreach (var s in data.Skins ?? new())
             if (FindItem(s.ItemId) is SkinItemSO ss) ss.Owned = s.Owned;
 
-        foreach (var sp in data.Spacecrafts)
+        foreach (var sp in data.Spacecrafts ?? new())
             if (FindItem(sp.ItemId) is SpacecraftItemSO ssc) ssc.Owned = sp.Owned;
-
-        EquippedWeaponId = data.EquippedWeaponId;
-        SelectedSpacecraftId = data.SelectedSpacecraftId;
     }
 
     public void FillSaveData(GameSaveData data)
@@ -94,6 +84,8 @@ public class InventoryManager : MonoBehaviour
         data.Spacecrafts.Clear();
 
         foreach (var list in categoryLists)
+        {
+            if (list == null) continue;
             foreach (var it in list.Items)
             {
                 if (it is WeaponItemSO w) data.Weapons.Add((WeaponSaveData)w.GetSaveData());
@@ -101,20 +93,17 @@ public class InventoryManager : MonoBehaviour
                 if (it is SkinItemSO s) data.Skins.Add((SkinSaveData)s.GetSaveData());
                 if (it is SpacecraftItemSO sc) data.Spacecrafts.Add((SpacecraftSaveData)sc.GetSaveData());
             }
-
-        data.EquippedWeaponId = EquippedWeaponId;
+        }
     }
 
     private BaseItemSO FindItem(string id)
     {
         foreach (var list in categoryLists)
         {
+            if (list == null) continue;
             var it = list.GetItemById(id);
             if (it != null) return it;
         }
         return null;
     }
-
-    public void SetSelectedSpacecraft(string id) { SelectedSpacecraftId = id; }
-
 }
