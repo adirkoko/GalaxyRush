@@ -237,11 +237,11 @@ MonoBehaviour:
   m_FontFeatureTable:
     m_MultipleSubstitutionRecords: []
     m_LigatureSubstitutionRecords:
-    - m_ComponentGlyphIDs: 18050000f4040000
+    - m_ComponentGlyphIDs: 18050000f4040000u
       m_LigatureGlyphID: 2284
-    - m_ComponentGlyphIDs: 11050000f4040000
+    - m_ComponentGlyphIDs: 11050000f4040000u
       m_LigatureGlyphID: 2279
-    - m_ComponentGlyphIDs: 03050000f4040000
+    - m_ComponentGlyphIDs: 03050000f4040000u
       m_LigatureGlyphID: 2268
     m_GlyphPairAdjustmentRecords:
     - m_FirstAdjustmentRecord:
