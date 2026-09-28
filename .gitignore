@@ -79,3 +79,10 @@ InitTestScene*.unity*
 
 # Crashlytics generated file
 crashlytics-build.properties
+# ---- Unity auto-generated ----
+/[Gg]enerated[Aa]ssets_deleted/
+/[Uu][Ii][Ee]lements[Ss]chema/
+
+# ---- Signing keys (safety net) ----
+*.keystore
+*.jks
